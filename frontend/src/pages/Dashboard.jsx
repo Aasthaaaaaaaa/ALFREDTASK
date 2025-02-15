@@ -18,7 +18,7 @@ const Dashboard = () => {
         throw new Error("No token found. Please log in.");
       }
 
-      const response = await axios.get("http://localhost:5000/api/flashcards/getFlashcards", {
+      const response = await axios.get("/api/flashcards/getFlashcards", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -50,7 +50,7 @@ const Dashboard = () => {
       }
 
       await axios.post(
-        "http://localhost:5000/api/flashcards",
+        "/api/flashcards",
         { question, answer },
         { headers: { Authorization: `Bearer ${token}` } }
       );

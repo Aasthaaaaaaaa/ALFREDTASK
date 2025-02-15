@@ -16,7 +16,7 @@ const FlashcardsPage = () => {
           return;
         }
 
-        const res = await axios.get("http://localhost:5000/api/flashcards/getFlashcards", {
+        const res = await axios.get("/api/flashcards/getFlashcards", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

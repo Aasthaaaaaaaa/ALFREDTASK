@@ -6,6 +6,8 @@ import compression from "compression";
 import connectDB from "./config/db.js";
 import flashcardRoutes from "./routes/flashcardRoutes.js";
 import authRoutes from "./routes/authRoutes.js"; // ✅ Import Auth Routes
+import path from "path";
+const __dirname = path.resolve();
 
 dotenv.config();
 connectDB();

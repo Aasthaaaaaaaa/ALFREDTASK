@@ -3,70 +3,89 @@ import axios from "axios";
 
 const Flashcard = ({ flashcard, isLastFlashcard, onNextFlashcard, onDelete }) => {
   const [showAnswer, setShowAnswer] = useState(false);
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+
+  const displayMessage = (msg, callback = null) => {
+    setMessage(msg);
+    setTimeout(() => {
+      setMessage("");
+      if (callback) callback(); // Execute callback after message disappears
+    }, 3000);
+  };
 
   const handleUpdate = async (flashcardId, isCorrect) => {
     if (!flashcardId) {
-      setError("❌ Flashcard ID is missing.");
+      displayMessage("❌ Flashcard ID is missing.");
       return;
     }
 
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        setError("No token found. Please log in.");
+        displayMessage("⚠️ No token found. Please log in.");
         return;
       }
 
       console.log("📌 Updating Flashcard ID:", flashcardId, "Correct:", isCorrect);
 
-      const response = await axios.put(
-        `/api/flashcards/updateFlashcards/${flashcardId}`,
+      await axios.put(
+        `http://localhost:5000/api/flashcards/updateFlashcards/${flashcardId}`,
         { isCorrect },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      console.log("✅ Flashcard updated:", response.data);
+      if (isCorrect) {
+        displayMessage(""); // No message for correct answer
+        setTimeout(() => onNextFlashcard(isCorrect), 500); // Proceed after 0.5 sec
+      } else {
+        displayMessage("⚠️ Wrong answer, taking back to flashcard one!", () => {
+          onNextFlashcard(isCorrect);
+        });
+      }
 
-      onNextFlashcard(isCorrect);
       setShowAnswer(false);
     } catch (error) {
       console.error("❌ Error updating flashcard:", error.response?.data || error);
-      setError("Failed to update flashcard.");
+      displayMessage("❌ Failed to update flashcard.");
     }
   };
 
   const handleDelete = async (flashcardId) => {
     if (!flashcardId) {
-      setError("❌ Flashcard ID is missing.");
+      displayMessage("❌ Flashcard ID is missing.");
       return;
     }
 
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        setError("No token found. Please log in.");
+        displayMessage("⚠️ No token found. Please log in.");
         return;
       }
 
       console.log("🗑️ Deleting Flashcard ID:", flashcardId);
 
-      await axios.delete(`/api/flashcards/deleteFlashcard${flashcardId}`, {
+      await axios.delete(`http://localhost:5000/api/flashcards/deleteFlashcard${flashcardId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("✅ Flashcard deleted");
-
-      if (onDelete) onDelete(flashcardId);
+      displayMessage("🗑️ Flashcard deleted.", () => {
+        onDelete(flashcardId);
+      });
     } catch (error) {
       console.error("❌ Error deleting flashcard:", error.response?.data || error);
-      setError("Failed to delete flashcard.");
+      displayMessage("❌ Failed to delete flashcard.");
     }
   };
 
   return (
     <div className="flex flex-col items-center gap-4 text-white">
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {/* Message Display */}
+      {message && (
+        <div className="text-yellow-400 text-sm bg-gray-800 px-4 py-2 rounded-md shadow-md">
+          {message}
+        </div>
+      )}
 
       {flashcard ? (
         <>

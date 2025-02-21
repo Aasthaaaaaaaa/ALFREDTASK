@@ -63,22 +63,16 @@ const Navbar = () => {
             className="text-2xl py-3 hover:text-[#ff66a3] transition-all"
             onClick={() => setIsOpen(false)}
           >
-            Dashboard
+            Create Flashcard
           </Link>
           <Link
             to="/flashcards"
             className="text-2xl py-3 hover:text-[#ff66a3] transition-all"
             onClick={() => setIsOpen(false)}
           >
-            Flashcards
+            Your Flashcards
           </Link>
-          <Link
-            to="/profile"
-            className="text-2xl py-3 hover:text-[#ff66a3] transition-all"
-            onClick={() => setIsOpen(false)}
-          >
-            Profile
-          </Link>
+          
           {user ? (
             <button
               onClick={() => {

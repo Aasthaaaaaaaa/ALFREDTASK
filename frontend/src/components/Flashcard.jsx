@@ -29,7 +29,7 @@ const Flashcard = ({ flashcard, isLastFlashcard, onNextFlashcard, onDelete }) =>
       console.log("📌 Updating Flashcard ID:", flashcardId, "Correct:", isCorrect);
 
       await axios.put(
-        `http://localhost:5000/api/flashcards/updateFlashcards/${flashcardId}`,
+        `/api/flashcards/updateFlashcards/${flashcardId}`,
         { isCorrect },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -65,7 +65,7 @@ const Flashcard = ({ flashcard, isLastFlashcard, onNextFlashcard, onDelete }) =>
 
       console.log("🗑️ Deleting Flashcard ID:", flashcardId);
 
-      await axios.delete(`http://localhost:5000/api/flashcards/deleteFlashcard${flashcardId}`, {
+      await axios.delete(`/api/flashcards/deleteFlashcard${flashcardId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

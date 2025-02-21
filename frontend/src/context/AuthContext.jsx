@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   // ✅ Signup function (returns errors if any)
   const signup = async (name, email, password) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/signup", {
+      const res = await axios.post("/api/auth/signup", {
         name,
         email,
         password,
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   // ✅ Login function (returns errors if any)
   const login = async (email, password) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", { email, password });
+      const res = await axios.post("/api/auth/login", { email, password });
 
       console.log("Login Response:", res);
 
